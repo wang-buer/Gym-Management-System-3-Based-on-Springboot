@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milotnt.mapper.EqOrderMapper">
+
+    <select id="findAll" resultType="eqOrder">
+        SELECT *
+        FROM eq_order
+        where 1=1
+        <if test="eqBegin!=null and ''!=eqBegin">
+            <![CDATA[  
+             and eq_begin = #{eqBegin}
+            ]]>
+        </if>
+        <if test="eqdate!=null and ''!=eqdate">
+            <![CDATA[  
+             and eq_date = #{eqdate}
+            ]]>
+        </if>
+    </select>
+
+    <insert id="insertEqOrder" parameterType="eqOrder">
+        INSERT INTO eq_order(eq_order_id, eq_id, eq_name, coach, member_name, member_account, eq_begin,eq_date,status)
+        VALUES (#{eqOrderId}, #{eqId}, #{eqName}, #{coach}, #{memberName}, #{memberAccount}, #{eqBegin}, #{eqdate}, #{status})
+    </insert>
+
+    <update id="updateEqOrder" parameterType="eqOrder">
+        UPDATE eq_order
+        SET member_account = #{memberAccount},
+            member_name    = #{memberName},
+            status  = #{status}
+            WHERE eq_order_id = #{eqOrderId}
+    </update>
+    <select id="selectEqOrderByMemberAccount" parameterType="java.lang.Integer" resultType="eqOrder">
+        SELECT *
+        FROM eq_order
+        WHERE member_account = #{memberAccount}
+    </select>
+
+    <delete id="deleteByEqOrderId" parameterType="java.lang.Integer">
+        DELETE
+        FROM eq_order
+        WHERE eq_order_id = #{eqOrderId}
+    </delete>
+
+    <select id="selectMemberByClassIdAndMemberAccount" parameterType="java.lang.Integer" resultType="eqOrder">
+        SELECT *
+        FROM eq_order
+        WHERE eq_id = #{eqId}
+          AND member_account = #{memberAccount}
+    </select>
+    <select id="selectBYid" parameterType="java.lang.Integer" resultType="eqOrder">
+        SELECT *
+        FROM eq_order
+      WHERE eq_order_id = #{eqOrderId}
+    </select>
+
+    <select id="selectMemberOrderList" parameterType="java.lang.Integer" resultType="eqOrder">
+        SELECT *
+        FROM eq_order
+        WHERE eq_id = #{eqId}
+    </select>
+    <select id="TotalBystatus" resultType="eqOrder">
+      select count(eq.eq_order_id) coach,eq.status
+      from eq_order eq
+      group by eq.status
+    </select>
+    <select id="TotalByEq" resultType="eqOrder">
+     select count(eq.eq_order_id) coach,eq.eq_id,eq.eq_name
+     from eq_order eq  where (eq.status='已到店' or eq.status='已预约')
+     group by eq.eq_id,eq.eq_name
+    </select>
+    <select id="TotalByEqBegin" resultType="eqOrder">
+   select count(eq.eq_order_id) coach,eq.eq_begin
+   from eq_order eq
+   where (eq.status='已到店' or eq.status='已预约')
+   group by eq.eq_begin
+    </select>
+
+</mapper>

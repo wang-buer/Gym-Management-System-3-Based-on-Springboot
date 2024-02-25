@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adminCommon::common-header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="adminCommon::common-navbar"></nav>
+<div id="layoutSidenav">
+    <div th:replace="adminCommon::common-sidenav"></div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">热门冷门时段</h1>
+
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/toAdminMain}">主页</a></li>
+                    <li class="breadcrumb-item active">热门冷门时段</li>
+                </ol>
+
+                <div class="card mb-4">
+
+                    <div id="chart1" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="adminCommon::common-footer"></footer>
+    </div>
+</div>
+
+<div th:include="adminCommon::common-scripts"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myCharts = echarts.init(document.getElementById('chart1'));
+
+
+    //数据加载完之前先显示一段简单的loading动画
+    myCharts.showLoading();
+    var names = [];
+
+    //放y轴值得货物数量的数组
+    var values = [];
+    var resdata = [];
+    //利用ajax从后台给数组存值
+    $.ajax({
+        type: "get",
+        url: "/eqOrder/TotalByEqBegin",     //请求发送到Controller list处
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            $.each(result, function (index, item) {
+                names.push(item.eqBegin);
+                values.push(item.coach);
+
+            })
+
+            myCharts.hideLoading();    //隐藏加载动画
+            myCharts.setOption({        //加载数据图表
+                xAxis: {
+                    data: names
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '货物',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: values,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,       //开启显示
+                                position: 'top',  //在上方显示
+                                textStyle: {      //数值样式
+                                    color: 'black',
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    }
+
+                }]
+            });
+        },
+        error: function (errorMsg) {
+            //请求失败时执行该函数
+            alert("图表请求数据失败!");
+            myCharts.hideLoading();
+        }
+    });
+
+
+</script>
+</body>
+</html>

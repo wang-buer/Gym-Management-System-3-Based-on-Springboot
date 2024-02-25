@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adminCommon::common-header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="adminCommon::common-navbar"></nav>
+<div id="layoutSidenav">
+    <div th:replace="adminCommon::common-sidenav"></div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">编辑通知公告</h1>
+
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/toAdminMain}">主页</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/notice/selNotice}">通知公告管理</a></li>
+                    <li class="breadcrumb-item active">编辑通知公告</li>
+                </ol>
+
+                <div class="card mb-4">
+
+                    <form th:action="@{/notice/updateNotice}" method="post">
+                        <div th:each="equ:${noticeList}">
+                            <table class="table table-hover">
+                                <tr>
+                                    <td text-align="center">通知公告id：</td>
+                                        <td><input type="text" class="form-control" readonly="readonly"
+                                               th:value="${equ.id}" name="id">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td text-align="center">通知公告名称：</td>
+                                    <td><input type="text" class="form-control" th:value="${equ.title}"
+                                               name="title"></td>
+                                </tr>
+                                <tr>
+                                    <td text-align="center">通知公告内容：</td>
+                                    <td>
+                                      <textarea  name="content" th:value="${equ.content}"></textarea>
+                                    </td>
+                                </tr>
+                              
+                            </table>
+                            <div style="text-align:center;margin-bottom:15px">
+                                <input type="submit" class="btn btn-outline-success" value="确认修改">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="adminCommon::common-footer"></footer>
+    </div>
+</div>
+
+<div th:include="adminCommon::common-scripts"></div>
+</body>
+</html>

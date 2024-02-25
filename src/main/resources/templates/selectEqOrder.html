@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="userCommon::common-header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="userCommon::common-navbar"></nav>
+<div id="layoutSidenav">
+    <div th:replace="userCommon::common-sidenav"></div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">场所或设备预约管理</h1>
+
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/toAdminMain}">主页</a></li>
+                    <li class="breadcrumb-item active">场所或设备预约管理</li>
+                </ol>
+
+                <div class="card mb-4">
+<!--                    <div class="card-header">-->
+<!--                        <i class="fas fa-table me-1"></i>-->
+<!--                        选择预约时段-->
+
+
+<!--                        &lt;!&ndash; Navbar Search&ndash;&gt;-->
+<!--                        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"-->
+<!--                              th:action="@{/eqOrder/selEqOrder}" method="post" name="addForm">-->
+<!--                            <div class="input-group">-->
+<!--                                <select name="time">-->
+<!--                                    <option value="08点-12点">08点-12点</option>-->
+<!--                                    <option value="14点-18点">14点-18点</option>-->
+<!--                                    <option value="18点-22点">18点-22点</option>-->
+<!--                                </select>-->
+<!--                                <input type="submit" class="btn btn-outline-success" value="搜索">-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th>场所或设备预约id</th>
+                                <th>名称</th>
+                                <th>费用</th>
+                                <th>预约日期</th>
+                                <th>时段</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="equ:${equipmentList}">
+                                <td th:text="${equ.eqId}">eqId</td>
+                                <td th:text="${equ.eqName}">eqName</td>
+                                <td th:text="${equ.coach}">coach</td>
+                                <td th:text="${equ.eqdate}">eqdate</td>
+                                <td th:text="${equ.eqBegin}">eqBegin</td>
+                                <td th:text="${equ.status}">status</td>
+                                <td>
+                                    <a th:href="@{/eqOrder/yuyueEquipment(eqOrderId=${equ.eqOrderId })}"
+                                       th:if="${equ.status=='未预约'}"
+                                       style="text-decoration: none">
+                                        <input type="button" class="btn btn-sm btn-outline-primary" value="预约">
+                                    </a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="userCommon::common-footer"></footer>
+    </div>
+</div>
+
+<div th:include="userCommon::common-scripts"></div>
+<script>
+    function del() {
+        let msg = "确定要删除吗？";
+        if (confirm(msg) == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adminCommon::common-header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="adminCommon::common-navbar"></nav>
+<div id="layoutSidenav">
+    <div th:replace="adminCommon::common-sidenav"></div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">添加通知公告</h1>
+
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/toAdminMain}">主页</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/notice/selNotice}">通知公告管理</a></li>
+                    <li class="breadcrumb-item active">添加通知公告</li>
+                </ol>
+
+                <div class="card mb-4">
+
+                    <form th:action="@{/notice/addNotice}" method="post" name="addForm"
+                          onsubmit="return beforeSubmit(this)">
+                        <table class="table table-hover">
+                            <tr>
+                                <td text-align="center">通知公告名称：</td>
+                                <td><input type="text" class="form-control" placeholder="名称" name="title"></td>
+                            </tr>
+                            <tr>
+                                <td text-align="center">内容：</td>
+                                <td>
+                                <textarea  name="content" ></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="text-align:center;margin-top:20px;margin-bottom:20px">
+                            <input type="submit" class="btn btn-outline-success" value="添加">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="adminCommon::common-footer"></footer>
+    </div>
+</div>
+
+<div th:include="adminCommon::common-scripts"></div>
+<script type="text/javascript">
+    function beforeSubmit(addForm) {
+        if (addForm.title.value == "") {
+            alert("请输入通知公告名称！")
+            return false;
+        }
+        if (addForm.content.value == "") {
+            alert("请输入通知公告内容！")
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
